@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Missão Saneamento!</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #d0f8f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+    .game-container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      width: 400px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    .story {
+      font-size: 18px;
+      margin: 20px 0;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    .options button:hover {
+      background-color: #45a049;
+    }
+    .score {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="game-container">
+  <h1>🌎 Missão Saneamento!</h1>
+  <div class="story" id="story">Carregando aventura...</div>
+  <div class="options" id="options"></div>
+  <div class="score" id="score">Pontos: 0</div>
+</div>
+
+<script>
+  const storySteps = [
+    {
+      text: "Você é o guardião da água! Você está patrulhando a cidade quando vê uma criança jogando uma garrafa no rio. Ela olha pra você e pede ajuda. O que você faz?",
+      options: [
+        { text: "Ensina a jogar o lixo na lixeira e explica sobre a água limpa.", correct: true },
+        { text: "Finge que não viu e vai embora.", correct: false }
+      ]
+    },
+    {
+      text: "Durante uma caminhada, você vê pessoas bebendo água barrenta de uma poça! Eles acham que está tudo bem. Como você age?",
+      options: [
+        { text: "Explica que precisam ferver ou filtrar a água antes de beber.", correct: true },
+        { text: "Concorda e também bebe da poça.", correct: false }
+      ]
+    },
+    {
+      text: "Chove muito forte e as ruas começam a alagar. Você encontra um bueiro entupido de sacolas plásticas! Qual atitude você toma?",
+      options: [
+        { text: "Tira o lixo do bueiro para a água escoar melhor.", correct: true },
+        { text: "Ignora e deixa o lixo entupindo tudo.", correct: false }
+      ]
+    },
+    {
+      text: "Você visita uma praça nova e vê uma placa: 'Ajude a manter a limpeza'. Um grupo começa a jogar embalagens no chão. O que você faz?",
+      options: [
+        { text: "Conversa com eles e explica a importância do cuidado ambiental.", correct: true },
+        { text: "Rasga a placa e vai brincar também.", correct: false }
+      ]
+    }
+  ];
+
+  let score = 0;
+  let currentStep = 0;
+
+  function showStory() {
+    const step = storySteps[currentStep];
+    document.getElementById('story').textContent = step.text;
+    const optionsDiv = document.getElementById('options');
+    optionsDiv.innerHTML = '';
+
+    step.options.forEach(option => {
+      const btn = document.createElement('button');
+      btn.textContent = option.text;
+      btn.onclick = () => makeChoice(option.correct);
+      optionsDiv.appendChild(btn);
+    });
+  }
+
+  function makeChoice(correct) {
+    if (correct) {
+      score += 10;
+      alert('Boa escolha! 🌟');
+    } else {
+      score -= 5;
+      alert('Ops! Escolha melhor na próxima! 🚫');
+    }
+    document.getElementById('score').textContent = `Pontos: ${score}`;
+    currentStep++;
+
+    if (currentStep < storySteps.length) {
+      showStory();
+    } else {
+      endStory();
+    }
+  }
+
+  function endStory() {
+    document.getElementById('story').textContent = "Parabéns, Guardião da Água! Sua cidade está mais limpa graças a você!";
+    document.getElementById('options').innerHTML = `<p>Sua pontuação final foi: ${score}</p>`;
+  }
+
+  // Inicializar
+  showStory();
+</script>
+
+</body>
+</html>

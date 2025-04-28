@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aqua.IA - Assistente de Saneamento</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #a6dcef, #dff6ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .chat-container {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .chat-header {
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      color: #2b7a78;
+    }
+    .chat-box {
+      flex-grow: 1;
+      height: 300px;
+      overflow-y: auto;
+      border: 2px solid #d9f2e6;
+      padding: 10px;
+      background: #f9f9f9;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-message {
+      margin: 5px 0;
+      padding: 8px 12px;
+      border-radius: 20px;
+      max-width: 80%;
+      font-size: 14px;
+    }
+    .user-message {
+      background: #c4eff7;
+      align-self: flex-end;
+      text-align: right;
+    }
+    .ai-message {
+      background: #f0f0f0;
+      align-self: flex-start;
+      text-align: left;
+    }
+    .input-group {
+      display: flex;
+      gap: 8px;
+    }
+    .user-input {
+      flex-grow: 1;
+      padding: 10px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      outline: none;
+    }
+    .button {
+      background: #3bb78f;
+      background: linear-gradient(45deg, #3b9eb7, #0b70ab);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .button:hover {
+      background: linear-gradient(45deg, #0bab64, #3bb78f);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="chat-container">
+  <div class="chat-header">Aqua.IA</div>
+  <div class="chat-box" id="chat-box"></div>
+  <div class="input-group">
+    <input type="text" id="user-input" class="user-input" placeholder="Digite uma mensagem...">
+    <button class="button" id="send-button">Enviar</button>
+  </div>
+</div>
+
+<script>
+  function addMessage(message, fromUser) {
+    const chatBox = document.getElementById('chat-box');
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('chat-message', fromUser ? 'user-message' : 'ai-message');
+    messageElement.textContent = message;
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function typeEffect(message, callback) {
+    const chatBox = document.getElementById('chat-box');
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('chat-message', 'ai-message');
+    chatBox.appendChild(messageElement);
+
+    let i = 0;
+    const interval = setInterval(() => {
+      messageElement.textContent += message[i];
+      i++;
+      if (i === message.length) {
+        clearInterval(interval);
+        callback();
+      }
+    }, 30);
+  }
+
+  function respond() {
+    const userInput = document.getElementById('user-input').value.trim();
+
+    if (userInput) {
+      addMessage(userInput, true);
+
+      let response = "Desculpe, mas não posso te ajudar com isso. Você tem mais alguma dúvida?";
+
+      const lowerInput = userInput.toLowerCase();
+
+      if (lowerInput.includes("o que é saneamento básico")) {
+        response = "Saneamento básico é o conjunto de serviços de abastecimento de água, tratamento de esgoto, manejo de resíduos e drenagem urbana.";
+      } else if (lowerInput.includes("qual é o país com mais saneamento básico")) {
+        response = "A Nova Zelândia lidera com 100% de acesso aos serviços de saneamento básico.";
+      } else if (lowerInput.includes("qual é a porcentagem de pessoas com saneamento básico no brasil")) {
+        response = "Em 2022, 84% da população brasileira tinha acesso à água e 56% ao esgoto.";
+      } else if (lowerInput.includes("qual é o pior país com saneamento básico")) {
+        response = "O Sudão do Sul é o país com os piores índices, com apenas 6,7% da população atendida.";
+      } else if (lowerInput.includes("quando surgiu o saneamento básico no brasil")) {
+        response = "O saneamento básico surgiu em 1561 no Brasil, com o primeiro poço no Rio de Janeiro.";
+      } else if (lowerInput.includes("oi")) {
+        response = "Oi! Eu sou a Aqua.IA, pronta para ajudar com questões sobre saneamento!";
+      } else if (lowerInput.includes("o que é universalização do saneamento básico")) {
+        response = "É garantir que todos tenham acesso aos serviços de saneamento até 2033.";
+      } else if (lowerInput.includes("todos tem direito de ter saneamento básico")) {
+        response = "Sim! O acesso ao saneamento básico é um direito garantido pela Constituição.";
+      } else if (lowerInput.includes("não obrigado") || lowerInput.includes("não obrigada")) {
+        response = "Ok! Fico feliz por ter ajudado. Qualquer dúvida, é só me chamar.";
+      } else if (lowerInput.includes("como funciona a estratégia do saneamento básico")) {
+        response = "Ela visa garantir a universalização do serviço, promovendo saúde pública e meio ambiente sustentável.";
+      } else if (lowerInput.includes("como a falta de saneamento básico prejudica o meio ambiente")) {
+        response = "A falta de saneamento polui solos e rios, prejudicando a biodiversidade e a qualidade de vida.";
+    } else if (lowerInput.includes("quais são as doenças causadas pela falta de saneamento básico")) {
+        response = "As doenças mais comuns são diarreia, cólera, hepatite A e leptospirose.";
+      }
+
+      typeEffect(response, () => {
+        document.getElementById('user-input').value = '';
+      });
+    }
+  }
+
+  document.getElementById('send-button').addEventListener('click', respond);
+  document.getElementById('user-input').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      respond();
+    }
+  });
+</script>
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>

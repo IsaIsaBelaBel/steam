@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz e Pou do Saneamento</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #a6dcef;
+      text-align: center;
+      padding: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    #pet {
+      width: 150px;
+      transition: transform 0.2s ease;
+    }
+    .health-bar {
+      width: 200px;
+      height: 20px;
+      background: #ccc;
+      border-radius: 10px;
+      margin: 10px auto;
+      position: relative;
+    }
+    .health {
+      height: 100%;
+      background: #4caf50;
+      border-radius: 10px;
+      width: 100%;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #message {
+      margin: 10px;
+      font-weight: bold;
+    }
+    .water-option {
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="quiz">
+    <h1>Quiz: Saneamento Básico</h1>
+    <div id="question"></div>
+    <div id="options"></div>
+  </div>
+
+  <div id="choosePet" class="hidden">
+    <h1>Muito bem!</h1>
+    <p>Agora use seus conhecimentos para cuidar de um bichinho. Qual você prefere?</p>
+    <button onclick="startGame('pou')">Pou</button>
+    <button onclick="startGame('gato')">Gato</button>
+  </div>
+
+  <div id="game" class="hidden">
+    <h1>Cuide do seu bichinho!</h1>
+    <img id="pet" src="pou.png" alt="Bichinho">
+    <div class="health-bar">
+      <div class="health" id="health"></div>
+    </div>
+    <p id="message">Cuide bem do seu bichinho!</p>
+    <div>
+      <button onclick="giveWater('torneira')">Dar água da torneira</button>
+      <button onclick="giveWater('rio')">Dar água do rio</button>
+    </div>
+    <div id="restart" class="hidden">
+      <button onclick="location.reload()">Recomeçar</button>
+    </div>
+  </div>
+
+  <div id="endGame" class="hidden">
+    <h1>Parabéns!</h1>
+    <p>Você cuidou muito bem do seu bichinho e venceu o jogo!</p>
+    <button onclick="location.reload()">Jogar novamente</button>
+  </div>
+
+  <script>
+    // Quiz
+    const questions = [
+      {
+        question: "Qual fonte de água é geralmente mais segura?",
+        options: ["Água da chuva", "Água filtrada"],
+        answer: "Água filtrada"
+      },
+      {
+        question: "Qual é um exemplo de saneamento básico?",
+        options: ["Coleta de lixo", "Pintura de muros"],
+        answer: "Coleta de lixo"
+      },
+      {
+        question: "O que pode causar doenças?",
+        options: ["Água contaminada", "Água fervida"],
+        answer: "Água contaminada"
+      }
+    ];
+
+    let currentQuestion = 0;
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById('question').textContent = q.question;
+      document.getElementById('options').innerHTML = '';
+
+      q.options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.textContent = option;
+        btn.onclick = () => checkAnswer(option);
+        document.getElementById('options').appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      if (selected === questions[currentQuestion].answer) {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          showQuestion();
+        } else {
+          endQuiz();
+        }
+      } else {
+        alert('Resposta incorreta! Tente novamente.');
+      }
+    }
+
+    function endQuiz() {
+      document.getElementById('quiz').classList.add('hidden');
+      document.getElementById('choosePet').classList.remove('hidden');
+    }
+
+    showQuestion();
+
+    // Game
+    let health = 100;
+    const petImg = document.getElementById('pet');
+    const healthBar = document.getElementById('health');
+    const message = document.getElementById('message');
+    const restartBtn = document.getElementById('restart');
+    let selectedPet = 'pou';
+
+    function startGame(pet) {
+      selectedPet = pet;
+      petImg.src = pet === 'pou' ? 'pou.png' : 'gato.png';
+      document.getElementById('choosePet').classList.add('hidden');
+      document.getElementById('game').classList.remove('hidden');
+    }
+
+    function giveWater(type) {
+      if (type === 'torneira') {
+        health = Math.min(health + 10, 100);
+        message.textContent = 'Seu bichinho está feliz e saudável!';
+        petImg.style.transform = 'scale(1)';
+        if (health === 100) {
+          endGame();
+        }
+      } else {
+        health = 0;
+        message.textContent = 'Oh não! Seu bichinho ficou muito doente!';
+        petImg.style.transform = 'rotate(20deg)';
+        restartBtn.classList.remove('hidden');
+      }
+      updateHealth();
+    }
+
+    function updateHealth() {
+      healthBar.style.width = health + '%';
+      healthBar.style.background = health > 50 ? '#4caf50' : (health > 20 ? '#ff9800' : '#f44336');
+    }
+
+    function endGame() {
+      document.getElementById('game').classList.add('hidden');
+      document.getElementById('endGame').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
