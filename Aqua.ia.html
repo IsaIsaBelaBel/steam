@@ -1,101 +1,105 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aqua.IA - Assistente de Saneamento</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title> Aqua.IA </title>
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #a6dcef, #dff6ff);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #e3f2fd;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
     }
+
     .chat-container {
-      background: #ffffff;
+      background-color: #ffffff;
       padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      width: 360px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
     }
+
     .chat-header {
       text-align: center;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: bold;
-      color: #2b7a78;
+      color: #0077b6;
+      margin-bottom: 12px;
     }
+
     .chat-box {
       flex-grow: 1;
       height: 300px;
       overflow-y: auto;
-      border: 2px solid #d9f2e6;
-      padding: 10px;
-      background: #f9f9f9;
-      border-radius: 10px;
+      border: 1px solid #bbdefb;
+      padding: 12px;
+      background-color: #f0faff;
+      border-radius: 8px;
+      margin-bottom: 12px;
       display: flex;
       flex-direction: column;
+      font-size: 15px;
     }
+
     .chat-message {
-      margin: 5px 0;
-      padding: 8px 12px;
-      border-radius: 20px;
+      margin: 6px 0;
+      padding: 10px 14px;
+      border-radius: 10px;
       max-width: 80%;
-      font-size: 14px;
+      word-wrap: break-word;
+      line-height: 1.4;
     }
+
     .user-message {
-      background: #c4eff7;
+      background-color: #cce5ff;
       align-self: flex-end;
-      text-align: right;
+      color: #003f7f;
     }
+
     .ai-message {
-      background: #f0f0f0;
+      background-color: #d0f0fd;
       align-self: flex-start;
-      text-align: left;
+      color: #004d61;
     }
-    .input-group {
-      display: flex;
-      gap: 8px;
-    }
+
     .user-input {
-      flex-grow: 1;
       padding: 10px;
-      border-radius: 20px;
+      border-radius: 8px;
       border: 1px solid #ccc;
       font-size: 14px;
-      outline: none;
     }
+
     .button {
-      background: #3bb78f;
-      background: linear-gradient(45deg, #3b9eb7, #0b70ab);
-      color: white;
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #90e0ef;
+      color: #003344;
       border: none;
-      padding: 10px 16px;
-      border-radius: 20px;
+      border-radius: 8px;
       cursor: pointer;
+      font-size: 14px;
       font-weight: bold;
-      transition: background 0.3s;
     }
+
     .button:hover {
-      background: linear-gradient(45deg, #0bab64, #3bb78f);
+      background-color: #72cfe0;
     }
   </style>
 </head>
-
 <body>
 
 <div class="chat-container">
-  <div class="chat-header">Aqua.IA</div>
+  <div class="chat-header">💧 Aqua.IA</div>
   <div class="chat-box" id="chat-box"></div>
-  <div class="input-group">
-    <input type="text" id="user-input" class="user-input" placeholder="Digite uma mensagem...">
-    <button class="button" id="send-button">Enviar</button>
-  </div>
+  <input type="text" id="user-input" class="user-input" placeholder="Digite uma mensagem..." />
+  <button class="button" id="send-button">Enviar</button>
 </div>
 
 <script>
@@ -110,6 +114,7 @@
 
   function typeEffect(message, callback) {
     const chatBox = document.getElementById('chat-box');
+
     const messageElement = document.createElement('div');
     messageElement.classList.add('chat-message', 'ai-message');
     chatBox.appendChild(messageElement);
@@ -122,7 +127,7 @@
         clearInterval(interval);
         callback();
       }
-    }, 30);
+    }, 50);
   }
 
   function respond() {
@@ -131,34 +136,33 @@
     if (userInput) {
       addMessage(userInput, true);
 
-      let response = "Desculpe, mas não posso te ajudar com isso. Você tem mais alguma dúvida?";
+      let response = "Essa pergunta é bem interessante! Mas não posso te ajudar com isso. Você tem mais alguma dúvida?";
+      const msg = userInput.toLowerCase();
 
-      const lowerInput = userInput.toLowerCase();
-
-      if (lowerInput.includes("o que é saneamento básico")) {
-        response = "Saneamento básico é o conjunto de serviços de abastecimento de água, tratamento de esgoto, manejo de resíduos e drenagem urbana.";
-      } else if (lowerInput.includes("qual é o país com mais saneamento básico")) {
-        response = "A Nova Zelândia lidera com 100% de acesso aos serviços de saneamento básico.";
-      } else if (lowerInput.includes("qual é a porcentagem de pessoas com saneamento básico no brasil")) {
-        response = "Em 2022, 84% da população brasileira tinha acesso à água e 56% ao esgoto.";
-      } else if (lowerInput.includes("qual é o pior país com saneamento básico")) {
-        response = "O Sudão do Sul é o país com os piores índices, com apenas 6,7% da população atendida.";
-      } else if (lowerInput.includes("quando surgiu o saneamento básico no brasil")) {
-        response = "O saneamento básico surgiu em 1561 no Brasil, com o primeiro poço no Rio de Janeiro.";
-      } else if (lowerInput.includes("oi")) {
-        response = "Oi! Eu sou a Aqua.IA, pronta para ajudar com questões sobre saneamento!";
-      } else if (lowerInput.includes("o que é universalização do saneamento básico")) {
-        response = "É garantir que todos tenham acesso aos serviços de saneamento até 2033.";
-      } else if (lowerInput.includes("todos tem direito de ter saneamento básico")) {
-        response = "Sim! O acesso ao saneamento básico é um direito garantido pela Constituição.";
-      } else if (lowerInput.includes("não obrigado") || lowerInput.includes("não obrigada")) {
-        response = "Ok! Fico feliz por ter ajudado. Qualquer dúvida, é só me chamar.";
-      } else if (lowerInput.includes("como funciona a estratégia do saneamento básico")) {
-        response = "Ela visa garantir a universalização do serviço, promovendo saúde pública e meio ambiente sustentável.";
-      } else if (lowerInput.includes("como a falta de saneamento básico prejudica o meio ambiente")) {
-        response = "A falta de saneamento polui solos e rios, prejudicando a biodiversidade e a qualidade de vida.";
-    } else if (lowerInput.includes("quais são as doenças causadas pela falta de saneamento básico")) {
-        response = "As doenças mais comuns são diarreia, cólera, hepatite A e leptospirose.";
+      if (msg.includes("o que é saneamento básico")) {
+        response = "Saneamento básico é um conjunto de direitos e normas sobre a saúde pública e individual, como abastecimento de água potável e tratamento de esgoto. Mais alguma dúvida?";
+      } else if (msg.includes("qual é o país com mais saneamento básico")) {
+        response = "A Nova Zelândia fica no topo desse ranking mundial, com 100% da sociedade com serviços de saneamento básico. Em 2021, a Nova Zelândia fez uma proibição contra qualquer tipo de plástico, como talheres, pratos, garrafas, etc. Alguma dúvida?";
+      } else if (msg.includes("qual é a porcentagem de pessoas com saneamento básico no brasil")) {
+        response = "Em 2022, 85% da população brasileira tinha acesso à água e 56% tinham acesso a esgoto. Porém, 49 milhões não tinham acesso a esses serviços.";
+      } else if (msg.includes("qual é o pior país com saneamento básico")) {
+        response = "O pior país em relação ao saneamento básico é o Sudão do Sul, onde apenas 6,7% tem acesso a instalações sanitárias.";
+      } else if (msg.includes("quando surgiu o saneamento básico no brasil")) {
+        response = "O saneamento básico começou em 1561 no Brasil, com o primeiro poço de água sendo construído no Rio de Janeiro. Podemos perceber que mesmo assim, o Rio de Janeiro não tem um dos melhores saneamentos básicos. Você tem mais alguma pergunta?";
+      } else if (msg.includes("oi")) {
+        response = "Oi! Eu sou a Aqua.IA e estou pronta para responder suas dúvidas e questões sobre o saneamento básico!";
+      } else if (msg.includes("o que é universalização do saneamento básico")) {
+        response = "A universalização do saneamento básico consiste em garantir que todos os brasileiros tenham acesso ao saneamento básico, essa meta tem que ser concluída até 2033.";
+      } else if (msg.includes("todos tem direito de ter saneamento básico")) {
+        response = "Claro que sim! Isso é um direito garantido pela Constituição federal.";
+      } else if (msg.includes("não obrigado") || msg.includes("não obrigada")) {
+        response = "Ok! Fico feliz por ter ajudado, qualquer dúvida é só me chamar :)";
+      } else if (msg.includes("como funciona a estratégia do saneamento básico")) {
+        response = "Essa estratégia visa a melhoria e garantia do saneamento básico para todos da sociedade. Investir na saúde pública é extremamente importante, pois consequentemente irá diminuir os custos com vacinas e hospitais, gerando economia. Uma estabilidade econômica e um bom saneamento básico são ótimos pontos atrativos para imigrantes, impulsionando o destaque do Brasil!";
+      } else if (msg.includes("como a falta de saneamento básico prejudica o meio ambiente")) {
+        response = "Infelizmente, a falta de saneamento básico no meio ambiente é um cenário triste. Através da poluição da água, contaminação do solo e da proliferação do lixo, os animais podem contrair doenças e, por acidente, engolir ou comer algum plástico ou outro material.";
+      } else if (msg.includes("quais as doenças causadas pela falta de saneamento básico")) {
+        response = "As doenças mais comuns causadas pela falta de saneamento básico são: cólera, leptospirose, hepatite A, febre tifoide, diarreia e dengue. Essas doenças podem ser transmitidas através da água contaminada ou do contato com o solo poluído.";
       }
 
       typeEffect(response, () => {
@@ -169,49 +173,8 @@
 
   document.getElementById('send-button').addEventListener('click', respond);
   document.getElementById('user-input').addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-      respond();
-    }
+    if (event.key === 'Enter') respond();
   });
-</script>
-
-<!-- Code injected by live-server -->
-<script>
-	// <![CDATA[  <-- For SVG support
-	if ('WebSocket' in window) {
-		(function () {
-			function refreshCSS() {
-				var sheets = [].slice.call(document.getElementsByTagName("link"));
-				var head = document.getElementsByTagName("head")[0];
-				for (var i = 0; i < sheets.length; ++i) {
-					var elem = sheets[i];
-					var parent = elem.parentElement || head;
-					parent.removeChild(elem);
-					var rel = elem.rel;
-					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-					}
-					parent.appendChild(elem);
-				}
-			}
-			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-			var address = protocol + window.location.host + window.location.pathname + '/ws';
-			var socket = new WebSocket(address);
-			socket.onmessage = function (msg) {
-				if (msg.data == 'reload') window.location.reload();
-				else if (msg.data == 'refreshcss') refreshCSS();
-			};
-			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-				console.log('Live reload enabled.');
-				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-			}
-		})();
-	}
-	else {
-		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-	}
-	// ]]>
 </script>
 </body>
 </html>
